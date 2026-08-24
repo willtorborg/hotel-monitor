@@ -30,7 +30,6 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 # ---------------------------------------------------------------------------
 # CONFIG — edit here to point at a different hotel or dates
@@ -191,12 +190,6 @@ def send_broken_alert(state):
     send_email("Hotel monitor may be broken", body, [env("ALERT_EMAIL")])
 
 
-def send_heartbeat(state, result):
-    body = (f"Hotel monitor is alive. Current: {result['state']} ({result['detail']}). "
-            f"State since {state.get('state_since', '?')}.")
-    send_email(f"Heartbeat: hotel monitor OK ({result['state']})", body, [env("ALERT_EMAIL")])
-
-
 # ---------------------------------------------------------------------------
 # State + main
 # ---------------------------------------------------------------------------
@@ -205,7 +198,7 @@ def load_state():
     if STATE_FILE.exists():
         return json.loads(STATE_FILE.read_text())
     return {"last_state": None, "state_since": None, "unknown_streak": 0,
-            "blocked_alert_sent": False, "last_heartbeat_date_et": None}
+            "blocked_alert_sent": False}
 
 
 def now_utc():
@@ -253,13 +246,6 @@ def main():
         state["unknown_streak"] = 0
         state["blocked_alert_sent"] = False
         state["last_state"] = result["state"]
-
-    # Daily 8am ET heartbeat
-    et_now = datetime.now(ZoneInfo("America/New_York"))
-    today_et = et_now.strftime("%Y-%m-%d")
-    if et_now.hour >= 8 and state.get("last_heartbeat_date_et") != today_et:
-        send_heartbeat(state, result)
-        state["last_heartbeat_date_et"] = today_et
 
     STATE_FILE.write_text(json.dumps(state, indent=2) + "\n")
 

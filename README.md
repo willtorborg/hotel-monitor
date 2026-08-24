@@ -20,8 +20,7 @@ dollar) plus OTA channels like Trip.com.
   **UNAVAILABLE** (trusted sold-out). Control empty too → the feed itself is
   broken → **UNKNOWN**, never a silent false "no rooms".
 - After 4 consecutive UNKNOWN runs (~1 hour) you get one "monitor may be
-  broken" email.
-- Once per day at/after 8am ET: a one-line heartbeat so you know it's alive.
+  broken" email. Otherwise it stays completely silent until rooms appear.
 
 A false alarm just costs a tap — the alert links straight to marriott.com to
 confirm and book. Caveat: Xotelo is an unofficial free service; if it ever
