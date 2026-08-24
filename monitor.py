@@ -67,7 +67,7 @@ def ssl_context():
         return ssl.create_default_context()
 ROOT = Path(__file__).resolve().parent
 STATE_FILE = ROOT / "state.json"
-UNKNOWN_STREAK_ALERT_AT = 4  # ~1 hour at a 15-minute cadence
+UNKNOWN_STREAK_ALERT_AT = 12  # ~1 hour at a 5-minute cadence
 
 
 def env(name, required=True):
@@ -185,7 +185,7 @@ def send_available_alert(result, test=False):
 
 def send_broken_alert(state):
     body = (f"The hotel monitor has returned UNKNOWN for {state['unknown_streak']} consecutive runs "
-            f"(~{state['unknown_streak'] * 15} min). The data feed may be down.\n\n"
+            f"(~{state['unknown_streak'] * 5} min). The data feed may be down.\n\n"
             f"Last detail: {state.get('last_detail', '?')}")
     send_email("Hotel monitor may be broken", body, [env("ALERT_EMAIL")])
 

@@ -4,7 +4,7 @@ on:
   schedule:
     # Every 15 minutes. NOTE: GitHub delays scheduled runs by 10-30+ minutes
     # at busy times; use the "Run workflow" button to trigger manually.
-    - cron: "*/15 * * * *"
+    - cron: "*/15 * * * *"  # backup only; cron-job.org triggers every 5 min
   workflow_dispatch:
 
 concurrency:
