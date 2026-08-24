@@ -1,0 +1,45 @@
+name: hotel-monitor
+
+on:
+  schedule:
+    # Every 15 minutes. NOTE: GitHub delays scheduled runs by 10-30+ minutes
+    # at busy times; use the "Run workflow" button to trigger manually.
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: hotel-monitor
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run monitor
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+          ALERT_SMS_EMAIL: ${{ secrets.ALERT_SMS_EMAIL }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python monitor.py
+
+      - name: Commit state
+        run: |
+          git config user.name "hotel-monitor-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git add state.json
+            git commit -m "state: $(date -u +'%Y-%m-%d %H:%M')"
+            git pull --rebase && git push
+          fi
