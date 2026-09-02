@@ -1,8 +1,8 @@
 {
   "last_state": "UNAVAILABLE",
   "state_since": "2026-08-24 15:47 UTC",
-  "unknown_streak": 1,
+  "unknown_streak": 0,
   "blocked_alert_sent": false,
   "last_heartbeat_date_et": "2026-08-24",
-  "last_detail": "target empty and control errored: request failed: <urlopen error [Errno 111] Connection refused>"
+  "last_detail": "no rates for target dates (feed verified live via control 2026-10-20)"
 }
