@@ -1,8 +1,8 @@
 {
   "last_state": "UNAVAILABLE",
   "state_since": "2026-09-10 14:50 UTC",
-  "unknown_streak": 1346,
-  "blocked_alert_sent": true,
+  "unknown_streak": 0,
+  "blocked_alert_sent": false,
   "last_heartbeat_date_et": "2026-08-24",
-  "last_detail": "target AND control (2026-11-03) both empty \u2014 feed may be broken"
+  "last_detail": "no rates for target dates (feed verified live via control 2026-11-03)"
 }
